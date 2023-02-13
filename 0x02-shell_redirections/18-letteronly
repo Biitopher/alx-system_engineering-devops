@@ -1,0 +1,2 @@
+#!/bin/bash
+grep -iA letteronly /etc/ssh/sshd_config

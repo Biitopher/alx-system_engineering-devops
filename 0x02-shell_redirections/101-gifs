@@ -1,0 +1,2 @@
+#!/bin/bash
+ls . .gif |rev sort cut  -f 1 | rev

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#Bash script displaying contents of the file username, id and path
+
+file_path="/etc/passwd"
+
+IFS=':'
+while read -r username _ userid _ _ home _; do
+    # Display the required information
+    echo "Username: $username"
+    echo "User ID: $userid"
+    echo "Home Directory: $home"
+    echo "--------------------"
+done < "$file_path"
+unset IFS

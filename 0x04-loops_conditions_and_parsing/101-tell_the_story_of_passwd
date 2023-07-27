@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#Bash script displaying file content using while loop and IFS
+
+file_path="/etc/passwd"
+
+IFS=':'
+
+while read -r username _ userid _ _ home _ shell; do
+    # Generate the fictional story for each user
+    echo "The user $username is part of the gang with GROUP ID $userid,"
+    echo "lives in $home and rides the command/shell $shell."
+    echo "User ID's place is protected by the passcode PASSWORD,"
+    echo "more info about the user here: https://example.com/users/$userid"
+    echo "--------------------"
+done < "$file_path"
+unset IFS

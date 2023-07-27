@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+#Bash script that displays 10 times but with iteration at 9 of Best School
+
+count=1
+while [ $count -le 10 ]
+do
+    if [ $count -eq 9 ]; then
+        echo "Best School"
+        echo "Hi"
+    else
+        echo "Best School"
+    fi
+    count=$((count + 1))
+done

@@ -3,10 +3,13 @@
 
 school_file="/path/to/school_file.txt"
 
-if [ -e "$school_file" ]; then
-    echo "school file exists"
+    if [ -e "$school_file" ]; then
+    	echo "school file exists"
+    else
+    	echo "school file does not exist"
+    fi
 
-    if [ -s "$school_file" ]; then
+    if [ ! -s "$school_file" ]; then
         echo "school file is not empty"
     else
         echo "school file is empty"
@@ -15,7 +18,3 @@ if [ -e "$school_file" ]; then
     if [ -f "$school_file" ]; then
         echo "school is a regular file"
     fi
-
-else
-    echo "school file does not exist"
-fi

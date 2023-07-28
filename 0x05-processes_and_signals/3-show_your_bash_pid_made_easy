@@ -1,19 +1,12 @@
 #!/usr/bin/env bash
 #Bash script displaying PID and process name bash
 
-if [ "$EUID" -ne 0 ]; then
-  echo "This script requires superuser privileges to access the /proc directory."
-  exit 1
-fi
+pids=$(pgrep bash)
 
-for pid_dir in /proc/[0-9]*/; do
-  pid=$(basename "$pid_dir")
+for pid in $pids; do
+    process_name=$(ps -o comm= -p $pid)
+echo "$pid $process_name"
 
-process_name=$(tr -d '\0' < "$pid_dir/cmdline")
-
-if [[ "$process_name" == *"bash"* ]]; then
-    echo "$pid $process_name"
-  fi
 done
 
 

@@ -4,39 +4,48 @@
 #include <sys/wait.h>
 #include <unistd.h>
 
+/**
+ * infinite_while - creating while loop
+ * @void: nothing
+ * Return: 0 on success
+ */
+
 int infinite_while(void)
 {
-    while (1)
-    {
-        sleep(1);
-    }
-    return (0);
+	while (1)
+	{
+		sleep(1);
+	}
+	return (0);
 }
+
+/**
+ * main - creates child process
+ *
+ * Return: 0 on success
+ */
 
 int main(void)
 {
-    pid_t pid;
-    int i;
+	pid_t pid;
+	int i;
 
-    for (i = 0; i < 5; i++)
-    {
-        pid = fork();
+	for (i = 0; i < 5; i++)
+	{
+		pid = fork();
+		if (pid == 0)
+		{
 
-        if (pid == 0)
-        {
-            // Child process
-            printf("Zombie process created, PID: %d\n", getpid());
-            exit(0);
-        }
-        else if (pid < 0)
-        {
-            // Error in fork
-            perror("Fork error");
-            exit(1);
-        }
-    }
+			printf("Zombie process created, PID: %d\n", getpid());
+			exit(0);
+		}
+		else if (pid < 0)
+		{
 
-    infinite_while();
-
-    return (0);
+			perror("Fork error");
+			exit(1);
+		}
+	}
+	infinite_while();
+	return (0);
 }

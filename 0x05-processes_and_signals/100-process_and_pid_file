@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#Bash script creating pid file
+
+terminate_script() {
+    echo "Deleting PID file and terminating the script..."
+    rm -f /var/run/myscript.pid
+    exit 0
+}
+
+interrupt_signal() {
+    echo "Y U no love me?!"
+}
+
+term_signal() {
+    echo "I hate the kill command"
+}
+
+trap terminate_script SIGQUIT SIGTERM
+trap interrupt_signal SIGINT
+trap term_signal SIGTERM
+
+echo $$ > /var/run/myscript.pid
+
+echo "To infinity and beyond indefinitely"
+while true; do
+    sleep 1
+done
+

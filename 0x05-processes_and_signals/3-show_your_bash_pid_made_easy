@@ -4,8 +4,8 @@
 pids=$(pgrep bash)
 
 for pid in $pids; do
-    process_name=$(ps -o comm= -p $pid)
-echo "$pid $process_name"
+	process_name=$(ps -o comm= -p $pid)
+	echo "$pid $process_name"
 
 done
 

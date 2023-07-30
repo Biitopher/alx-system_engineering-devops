@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-
 #Bash script using while loop to display time for 12hrs and 59 minutes
 
 hour=0

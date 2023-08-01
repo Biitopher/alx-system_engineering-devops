@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+#Parsing  of Apache log access files
+
+if [ ! -f "apache-access.log" ]; then
+  echo "Error: apache-access.log file not found. Please download and place the file in the same directory as this script."
+  exit 1
+fi
+awk '{print $1, $9}' apache-access.log

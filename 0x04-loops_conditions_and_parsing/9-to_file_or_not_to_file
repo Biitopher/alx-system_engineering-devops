@@ -7,9 +7,10 @@ school_file="/path/to/school_file.txt"
     	echo "school file exists"
     else
     	echo "school file does not exist"
+	exit 1
     fi
 
-    if [ -s "$school_file" ]; then
+    if [ ! -s "$school_file" ]; then
         echo "school file is not empty"
     else
         echo "school file is empty"

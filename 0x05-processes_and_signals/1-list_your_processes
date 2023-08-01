@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#Bash script displaying the clist of current running processes
+
+ps -auxf

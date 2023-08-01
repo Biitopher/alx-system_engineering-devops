@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#Bash script for list of processes with a line containing bash word
+# shellcheck disable=SC2009
+
+ps aux | grep -v grep | grep bash
+

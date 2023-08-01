@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#Bash script displaying stopping to infinity and beyond process
+
+pid=$(pgrep -f "4-to_infinity_and_beyond")
+
+kill $pid

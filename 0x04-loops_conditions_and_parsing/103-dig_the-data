@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-#Bash script parsing apache log access files
+#Bash script grouping visitors IP and HTTP status code
 
 if [ ! -f "apache-access.log" ]; then
   echo "Error: apache-access.log file not found. Please download and place the file in the same directory as this script."
   exit 1
 fi
 
-awk '{print $1, $9}' apache-access.log
+awk '{print $1, $9}' apache-access.log | sort | uniq -c | sort -nr | awk '{print $1, $2, $3}'

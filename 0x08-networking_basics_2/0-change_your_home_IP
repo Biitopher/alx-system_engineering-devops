@@ -1,24 +1,7 @@
 #!/usr/bin/env bash
 #Bash script to configure Ubuntu server
 
-if [ ! -f /proc/1/cgroup ] || ! cat /proc/1/cgroup | grep -q docker; then
-    echo "ERROR: This script should be run inside a Docker container."
-    exit 1
-fi
-LOCALHOST_RESOLVE="127.0.0.2"
-FACEBOOK_RESOLVE="8.8.8.8"
-
-if [ "$EUID" -ne 0 ]; then
-    echo "ERROR: This script must be run as root."
-    exit 1
-fi
-if [ ! -w "/etc/hosts" ]; then
-    echo "ERROR: Unable to write to /etc/hosts. Please run the script with appropriate permissions."
-    exit 1
-fi
-
-# Update /etc/hosts with the desired DNS resolutions
-echo -e "${LOCALHOST_RESOLVE}\tlocalhost" >> /etc/hosts
-echo -e "${FACEBOOK_RESOLVE}\tfacebook.com" >> /etc/hosts
-
-echo "DNS configurations have been updated successfully."
+cp /etc/hosts ~/hosts.new
+echo "127.0.0.2		localhost" > ~/hosts.temp
+echo "8.8.8.8		facebook.com" >> ~/hosts.temp
+cp -f ~/hosts.new /etc/hosts

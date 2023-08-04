@@ -2,27 +2,16 @@
 #Bash script displaying listening ports
 
 
-if [ $? -ne 0 ]; then
-    echo "Error: Failed to execute netstat. Make sure you have the necessary permissions."
-    exit 1
-fi
+echo "Listening Ports:"
+echo "PID    Program Name    Port"
 
-listening_sockets=$(echo "$netstat_output" | awk '$6 == "LISTEN"')
-
-if [ -z "$listening_sockets" ]; then
-    echo "No listening sockets found."
-    exit 0
-fi
-
-while IFS= read -r line; do
-    port=$(echo "$line" | awk '{print $4}' | awk -F ':' '{print $NF}')
+while read -r line; do
+    protocol=$(echo "$line" | awk '{print $1}')
+    port=$(echo "$line" | awk '{print $4}' | awk -F':' '{print $NF}')
     pid=$(echo "$line" | awk '{print $NF}')
 
-    # Get the program name from the PID (if available)
-    program=$(ps -p "$pid" -o comm= 2>/dev/null)
-    if [ -z "$program" ]; then
-        program="N/A"
-    fi
+    # Get program name from PID
+    program_name=$(ps -p "$pid" -o comm= 2>/dev/null)
 
-    echo "Port $port is being listened by PID $pid, Program: $program"
+    echo "$pid    $program_name    $port"
 done <<< "$listening_sockets"

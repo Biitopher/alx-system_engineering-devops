@@ -4,4 +4,8 @@
 cp /etc/hosts ~/hosts.new
 echo "127.0.0.2		localhost" > ~/hosts.temp
 echo "8.8.8.8		facebook.com" >> ~/hosts.temp
-cp -f ~/hosts.new /etc/hosts
+
+tail -n +2 ~/hosts.new >> ~/hosts.temp
+cp -f ~/hosts.temp /etc/hosts
+
+rm ~/hosts.temp

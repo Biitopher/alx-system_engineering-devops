@@ -1,17 +1,4 @@
 #!/usr/bin/env bash
 #Bash script displaying listening ports
 
-
-echo "Listening Ports:"
-echo "PID    Program Name    Port"
-
-while read -r line; do
-    protocol=$(echo "$line" | awk '{print $1}')
-    port=$(echo "$line" | awk '{print $4}' | awk -F':' '{print $NF}')
-    pid=$(echo "$line" | awk '{print $NF}')
-
-    # Get program name from PID
-    program_name=$(ps -p "$pid" -o comm= 2>/dev/null)
-
-    echo "$pid    $program_name    $port"
-done <<< "$listening_sockets"
+sudo netstat -lp

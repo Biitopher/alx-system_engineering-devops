@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+#SSH configuration file
+
+52.91.119.211
+    IdentityFile ~/.ssh/school
+    PreferredAuthentications publickey
+    PasswordAuthentication no

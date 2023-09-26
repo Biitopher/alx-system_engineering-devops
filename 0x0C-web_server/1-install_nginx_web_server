@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#Install nginx web server
+
+sudo apt-get update
+sudo apt-get install -y nginx
+sudo service nginx start
+
+echo "<html><body>Hello World!</body></html>" | sudo tee /var/www/html/index.html > /dev/null
+if ! sudo netstat -tuln | grep -q ":80 "; then
+    sudo sed -i 's/^\(listen\s*\)80/\180/' /etc/nginx/sites-available/default
+    sudo service nginx restart
+fi
+sudo sed -i 's/^\(root\s*\)\/var\/www\/html/\1\/var\/www\/html/' /etc/nginx/sites-available/default
+sudo service nginx restart
+echo "Nginx has been installed and configured to serve 'Hello World!' at http://your-server-ip/"

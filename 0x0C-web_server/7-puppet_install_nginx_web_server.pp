@@ -3,41 +3,17 @@
 
 # Ensure Nginx package is installed
 package { 'nginx':
-  ensure => installed,
+provider => 'apt',
 }
 
-# Ensure Nginx service is running and enabled
-service { 'nginx':
-  ensure  => 'running',
-  enable  => true,
-  require => Package['nginx'],
+exec {'hlbtn_page':
+command => '/usr/bin/sudo /bin/echo Holberton School > /var/www/html/index.nginx-debian.html',
 }
+exec {'redirect_page':
 
-# Configure Nginx to listen on port 80
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => "server {
-    listen 80;
-    root /var/www/html;
-    location / {
-        index index.html;
-    }
-    location /redirect_me {
-        return 301 http://example.com/newpage;
-    }
-}\n",
-  notify  => Service['nginx'],
+command => '/usr/bin/sudo /bin/sed -i "66i rewrite ^/redirect_me https://www.youtube.com/ permanent;" /etc/nginx/sites-available/default',
 }
+exec {'start_server':
 
-# Create a simple HTML page with "Hello World!"
-file { '/var/www/html/index.html':
-  ensure  => file,
-  content => "<html><body>Hello World!</body></html>\n",
-  require => Package['nginx'],
-}
-
-# Remove the default Nginx default configuration
-file { '/etc/nginx/sites-enabled/default':
-  ensure => absent,
-  notify => Service['nginx'],
+command => '/usr/bin/sudo /usr/sbin/service nginx start',
 }

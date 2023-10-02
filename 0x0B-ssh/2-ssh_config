@@ -1,17 +1,9 @@
 #!/usr/bin/env bash
 #SSH configuration file
 
-34.229.69.25
-    IdentityFile ~/.ssh/school
-    PreferredAuthentications publickey
-    PasswordAuthentication no
-
-100.26.227.84
-    IdentityFile ~/.ssh/school
-    PreferredAuthentications publickey
-    PasswordAuthentication no
-
-100.24.74.165
+Host 261478-web-01
+    HostName 34.229.69.25
+    User ubuntu    
     IdentityFile ~/.ssh/school
     PreferredAuthentications publickey
     PasswordAuthentication no

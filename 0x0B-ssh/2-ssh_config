@@ -5,3 +5,13 @@
     IdentityFile ~/.ssh/school
     PreferredAuthentications publickey
     PasswordAuthentication no
+
+100.26.227.84
+    IdentityFile ~/.ssh/school
+    PreferredAuthentications publickey
+    PasswordAuthentication no
+
+100.24.74.165
+    IdentityFile ~/.ssh/school
+    PreferredAuthentications publickey
+    PasswordAuthentication no

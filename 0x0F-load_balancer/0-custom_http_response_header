@@ -27,5 +27,6 @@ custom_server_config=\
 		}
 }"
 echo "$custom_server_config" | sudo dd status=none of=/etc/nginx/sites-enabled/default
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/
 
 sudo service nginx restart

@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+#key to display my school server
+
+ssh -i ~/.ssh/school ubuntu@34.229.69.25

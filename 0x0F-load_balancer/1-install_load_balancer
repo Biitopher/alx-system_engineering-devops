@@ -11,7 +11,7 @@ frontend gracekamondo.tech
     bind 0:80
     default_backend gracekamondo.tech
 
-backend gracekamodo.tech_backend
+backend gracekamondo.tech_backend
     timeout connect  3000
     timeout server  30000
     balance roundrobin

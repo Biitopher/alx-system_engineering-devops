@@ -9,7 +9,7 @@ cat <<EOT | sudo tee -a /etc/haproxy/haproxy.cfg
 frontend gracekamondo.tech
     timeout client  30000
     bind 0:80
-    default_backend gracekamondo.tech
+    default_backend gracekamondo.tech_backend
 
 backend gracekamondo.tech_backend
     timeout connect  3000

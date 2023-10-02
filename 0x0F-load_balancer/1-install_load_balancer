@@ -3,7 +3,7 @@
 
 sudo apt-get update
 sudo apt-get install -y haproxy
-
+cat <<EOF | sudo tee /etc/haproxy/haproxy.cfg
 global
     maxconn 2000
     log /dev/log local0

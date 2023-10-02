@@ -2,8 +2,13 @@
 #SSH configuration file
 
 Host 261478-web-01
+<<<<<<< HEAD
     HostName 34.229.69.25
     User ubuntu    
+=======
+    Hostname 34.229.69.25
+    User ubuntu
+>>>>>>> 3d7f1d74fdd429fa656ed196a7a29389b8c497e9
     IdentityFile ~/.ssh/school
     PreferredAuthentications publickey
     PasswordAuthentication no

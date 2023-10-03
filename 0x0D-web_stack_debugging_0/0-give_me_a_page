@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 #start Apache server
 
+cd /var/www/html/ || exit
+echo "Hello Holberton" > index.html
+
 service apache2 start

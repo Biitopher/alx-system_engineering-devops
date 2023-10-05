@@ -47,36 +47,6 @@ backend gracekamodo.tech_backend
     balance roundrobin
     server 261478-web-01 34.229.69.25:80 check
     server 261478-web-02 100.26.227.84:80 check
-frontend gracekamondo.tech
-    timeout client  30000
-    bind 0:80
-    default_backend gracekamondo.tech
 
-backend gracekamondo.tech_backend
-    timeout connect  3000
-    timeout server  30000
-    balance roundrobin
-    server 261478-web-01 34.229.69.25:80 check
-    server 261478-web-02 100.26.227.84:80 check
-frontend gracekamondo.tech
-    timeout client  30000
-    bind 0:80
-    default_backend gracekamondo.tech
-
-backend gracekamondo.tech_backend
-    timeout connect  3000
-    timeout server  30000
-    balance roundrobin
-    server 261478-web-01 34.229.69.25:80 check
-    server 261478-web-02 100.26.227.84:80 check
-frontend gracekamondo.tech
-    timeout client  30000
-    bind 0:80
-    default_backend gracekamondo.tech_backend
-
-backend gracekamondo.tech_backend
-    timeout connect  3000
-    timeout server  30000
-    balance roundrobin
-    server 261478-web-01 34.229.69.25:80 check
-    server 261478-web-02 100.26.227.84:80 check
+backend letsencrypt-backend
+        server letsencrypt 127.0.0.1:8888

@@ -5,7 +5,7 @@ global
         log /dev/log    local0
         log /dev/log    local1 notice
         chroot /var/lib/haproxy
-        stats socket /run/haproxy/admin.sock mode 660 level admin
+        stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
         stats timeout 30s
         user haproxy
         group haproxy
@@ -15,11 +15,10 @@ global
         ca-base /etc/ssl/certs
         crt-base /etc/ssl/private
 
-        # Default ciphers to use on SSL-enabled listening sockets.
-        # For more information, see ciphers(1SSL). This list is from:
-        #  https://hynek.me/articles/hardening-your-web-servers-ssl-ciphers/
-        ssl-default-bind-ciphers ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS
-        ssl-default-bind-options no-sslv3
+        # See: https://ssl-config.mozilla.org/#server=haproxy&server-version=2.0.3&config=intermediate
+        ssl-default-bind-ciphers ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384
+        ssl-default-bind-ciphersuites TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256
+        ssl-default-bind-options ssl-min-ver TLSv1.2 no-tls-tickets
 
 defaults
         log     global
@@ -36,25 +35,58 @@ defaults
         errorfile 502 /etc/haproxy/errors/502.http
         errorfile 503 /etc/haproxy/errors/503.http
         errorfile 504 /etc/haproxy/errors/504.http
+frontend Randommall.tech
+    timeout client  30000
+    bind 0:80
+    default_backend Randommall.tech_backend
 
-frontend http
-        bind *:80
+backend Randommall.tech_backend
+    timeout connect  3000
+    timeout server  30000
+    balance roundrobin
+    server 261478-web-01 34.229.69.25:80 check
+    server 261478-web-02 100.26.227.84:80 check
+frontend gracekamondo.tech
+    timeout client  30000
+    bind 0:80
+    default_backend gracekamondo.tech
 
-        # HAproxy must be listening on port TCP 443 per task 0x10-https_ssl
-        bind *:443 ssl crt /etc/ssl/www.diamondpaws.tech/www.diamondpaws.tech.pem
+backend gracekamodo.tech_backend
+    timeout connect  3000
+    timeout server  30000
+    balance roundrobin
+    server 261478-web-01 34.229.69.25:80 check
+    server 261478-web-02 100.26.227.84:80 check
+frontend gracekamondo.tech
+    timeout client  30000
+    bind 0:80
+    default_backend gracekamondo.tech
 
-        # Test URI to see if its a letsencrypt request
-        acl letsencrypt-acl path_beg /.well-known/acme-challenge/
-        use_backend letsencrypt-backend if letsencrypt-acl
+backend gracekamondo.tech_backend
+    timeout connect  3000
+    timeout server  30000
+    balance roundrobin
+    server 261478-web-01 34.229.69.25:80 check
+    server 261478-web-02 100.26.227.84:80 check
+frontend gracekamondo.tech
+    timeout client  30000
+    bind 0:80
+    default_backend gracekamondo.tech
 
-        default_backend web_servers
+backend gracekamondo.tech_backend
+    timeout connect  3000
+    timeout server  30000
+    balance roundrobin
+    server 261478-web-01 34.229.69.25:80 check
+    server 261478-web-02 100.26.227.84:80 check
+frontend gracekamondo.tech
+    timeout client  30000
+    bind 0:80
+    default_backend gracekamondo.tech_backend
 
-backend web_servers
-        balance roundrobin
-        mode http
-        server 261478-web-01 34.229.69.25:80
-        server 261478-web-02 100.26.227.84:80
-
-# LE Backend
-backend letsencrypt-backend
-        server letsencrypt 127.0.0.1:8888
+backend gracekamondo.tech_backend
+    timeout connect  3000
+    timeout server  30000
+    balance roundrobin
+    server 261478-web-01 34.229.69.25:80 check
+    server 261478-web-02 100.26.227.84:80 check

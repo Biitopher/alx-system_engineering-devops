@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
-#commands that open port 80 (hittp)
-sudo sed -i "s/8080/80/" /etc/nginx/sites-enabled/default
+#commands that open port 80 (http)
+sudo rm /etc/nginx/sites-enabled/default
+sudo ln -s /etc/nginx/sites-available/default /etc/nginx/sites-enabled/default
 sudo service nginx restart

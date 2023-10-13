@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#HTTPS traffic
+
+global
+    maxconn 4096
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000ms
+    timeout client 50000ms
+    timeout server 50000ms
+
+frontend http-in
+    bind *:80
+    acl is_http hdr_beg(host) -i http
+    redirect scheme https if is_http
+
+frontend https-in
+    bind *:443 ssl crt /etc/ssl/certs/haproxy.pem
+    mode http
+    option httplog
+    option forwardfor
+    reqadd X-Forwarded-Proto:\ https
+    default_backend web_servers
+
+backend web_servers
+    mode http
+    balance roundrobin
+    option httpchk HEAD / HTTP/1.1\r\nHost:localhost
+    server web1 192.168.1.101:80 check
+    server web2 192.168.1.102:80 check

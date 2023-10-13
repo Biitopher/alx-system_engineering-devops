@@ -6,7 +6,7 @@ sudo apt-get install -y haproxy
 echo "ENABLED=1" | sudo tee -a /etc/default/haproxy
 
 cat <<EOT | sudo tee -a /etc/haproxy/haproxy.cfg
-frontend gracekamondo.tech
+frontend gracekamondo_frontend
     timeout client  30000
     bind 0:80
     default_backend gracekamondo.tech_backend
@@ -18,5 +18,13 @@ backend gracekamondo.tech_backend
     server 261478-web-01 34.229.69.25:80 check
     server 261478-web-02 100.26.227.84:80 check
 EOT
+
+bind *:443 ssl crt /etc/haproxy/certs/www.gracekamondo.tech.pem
+redirect scheme https if !{ ssl_fc }
+frontend http_front
+        bind *:80
+        bind *:443 ssl crt /etc/haproxy/certs/www.gracekamondo.tech.pem
+        redirect scheme https code 301 if !{ ssl_fc }
+        default_backend http_back
 
 sudo service haproxy restart

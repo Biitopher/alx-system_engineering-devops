@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#Stop the Nginx service
+
+
+service nginx stop
+sed -i 's/user\s*nginx;/user nginx nginx;/' /etc/nginx/nginx.conf
+rm /var/run/nginx.pid
+service nginx start
+ps -ef | grep nginx
+netstat -tuln | grep 8080

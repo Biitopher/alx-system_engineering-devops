@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+#Bash script that accepts a username as an argument
+
 
 if [ $# -ne 1 ]; then
     echo "Usage: $0 <username>"

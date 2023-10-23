@@ -29,11 +29,10 @@ if __name__ == "__main":
 
     filename = f"{user_id}.csv"
     with open(filename, mode='w', newline='') as csv_file:
-        csv_writer = csv.writer((cvs_file, delimiter=',', quotechar='"',
+        csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"',
                                 quoting=csv.QUOTE_ALL, lineterminator='\n')
 
-                                for task in todos_data:
-                                if task.get('userId') == int(userId):
-                                writer.writerow([userId, user_name,
-                                                str(task.get('completed')),
-                                                task.get('title')])
+        for task in todos_data:
+            if task.get('userId') == int(userId):
+                writer.writerow([userId, user_name, str(task.get(
+                    'completed')), task.get('title')])

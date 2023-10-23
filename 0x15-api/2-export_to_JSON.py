@@ -1,37 +1,30 @@
 #!/usr/bin/python3
-"""returns information about TODO list progress in CSV format"""
+"""Python script using REST API and exporting data to JSON"""
 
-import requests
-import sys
-import csv
+if __name__ == "__main__":
 
-if __name__ == "__main":
-    if len(sys.argv) != 2:
-        print("Usage: python script.py <employee_id>")
-        sys.exit(1)
+    import csv
+    import requests
+    import sys
+    import json
 
     userId = sys.argv[1]
+    user = requests.get("https://jsonplaceholder.typicode.com/users/{}"
+                        .format(userId))
+    todos_response = requests.get('https://jsonplaceholder.typicode.com/todos')
+    todos_response = todos_response.json()
 
-    user_response = requests.get(
-            f"https://jsonplaceholder.typicode.com/users/{userId}")
+    todoUser = {}
+    taskList = []
 
-    if user_response.status_code != 200:
-        print(f"Error: User with ID {userId} not found.")
-        sys.exit(1)
+    for task in todos_response:
+        if task.get('userId') == int(userId):
+            taskDict = {"task": task.get('title'),
+                        "completed": task.get('completed'),
+                        "username": user.json().get('username')}
+            taskList.append(taskDict)
+    todoUser[userId] = taskList
 
-    user_name = user_response.json().get('name')
-
-    todos_response = requests.get(
-            f"https://jsonplaceholder.typicode.com/todos?userId={userId}")
-
-    filename = f"{userId}.csv"
-    with open(filename, mode='w', newline='') as csv_file:
-        csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(["USER_ID", "USERNAME",
-                            "TASK_COMPLETED_STATUS", "TASK_TITLE"])
-        for task in todos_response.json():
-            csv_writer.writerow(
-                    [userId, user_name,
-                     task.get('completed'), task.get('title')])
-
-    print(f"Data has been exported to {filename} in CSV format.")
+    filename = userId + '.json'
+    with open(filename, mode='w') as csv_file:
+        json.dump(todoUser, csv_file)

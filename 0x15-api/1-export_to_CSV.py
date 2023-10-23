@@ -13,7 +13,7 @@ if __name__ == "__main":
     userId = sys.argv[1]
 
     user_response = requests.get(
-        f"https://jsonplaceholder.typicode.com/users/{userId}")
+        "https://jsonplaceholder.typicode.com/users/{}".format(userId))
 
     if user_response.status_code != 200:
         print(f"Error: User with ID {userId} not found.")
@@ -27,24 +27,15 @@ if __name__ == "__main":
             "https://jsonplaceholder.typicode.com/todos")
     todo_data = todos_response.json()
 
-    totalTasks = 0
-    completedTasks = []
-
-    for task in todo_data:
-        if task.get('userId') == user_id:
-            totalTasks += 1
-            task_status = "Completed" if task.get(
-                    'completed') else "Not Completed"
-            completedTasks.append((user_id, user_name, task_status,
-                                  task.get('title')))
-
     filename = f"{user_id}.csv"
     with open(filename, mode='w', newline='') as csv_file:
         csv_writer = csv.writer(csv_file)
-
         csv_writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS",
                             "TASK_TITLE"])
 
         csv_writer.writerows(completedTasks)
 
-    print(f"Data exported to {filename}.")
+    for task in todo_data:
+        if task.get('userId') == int(userId):
+            cvs_writer.writerow([userId, user_name, str(task.get('completed')),
+                                 task.get('title')])

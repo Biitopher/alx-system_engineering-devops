@@ -6,6 +6,7 @@ import sys
 import csv
 
 if __name__ == "__main":
+
     if len(sys.argv) != 2:
         print("Usage: python script.py <employee_id>")
         sys.exit(1)
@@ -20,14 +21,13 @@ if __name__ == "__main":
         sys.exit(1)
 
     user_data = user_response.json()
-    user_id = user_data.get('id')
     user_name = user_data.get('name')
 
     todos_response = requests.get(
             "https://jsonplaceholder.typicode.com/todos")
     todo_data = todos_response.json()
 
-    filename = f"{user_id}.csv"
+    filename = userId + ".csv"
     with open(filename, mode='w', newline='') as csv_file:
         csv_writer = csv.writer(csv_file, delimiter=',', quotechar='"',
                                 quoting=csv.QUOTE_ALL, lineterminator='\n')

@@ -11,7 +11,8 @@ if __name__ == "__main__":
 
     userId = sys.argv[1]
 
-    user_response = requests.get(f"https://jsonplaceholder.typicode.com/users/{userId}")
+    user_response = requests.get(
+                    f"https://jsonplaceholder.typicode.com/users/{userId}")
 
     if user_response.status_code != 200:
         print(f"Error: User with ID {userId} not found.")
@@ -21,7 +22,8 @@ if __name__ == "__main__":
     user_name = user_data.get('name')
 
     # Fetch the user's TODO list
-    todos_response = requests.get(f"https://jsonplaceholder.typicode.com/todos?userId={userId}")
+    todos_response = requests.get(
+                f"https://jsonplaceholder.typicode.com/todos?userId={userId}")
     todo_data = todos_response.json()
 
     totalTasks = len(todo_data)

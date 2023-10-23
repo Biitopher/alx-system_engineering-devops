@@ -29,13 +29,11 @@ if __name__ == "__main":
 
     filename = f"{user_id}.csv"
     with open(filename, mode='w', newline='') as csv_file:
-        csv_writer = csv.writer(csv_file)
-        csv_writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS",
-                            "TASK_TITLE"])
+        csv_writer = csv.writer((cvs_file, delimiter=',', quotechar='"',
+                                quoting=csv.QUOTE_ALL, lineterminator='\n')
 
-        csv_writer.writerows(completedTasks)
-
-    for task in todo_data:
-        if task.get('userId') == int(userId):
-            cvs_writer.writerow([userId, user_name, str(task.get('completed')),
-                                 task.get('title')])
+                                for task in todos_data:
+                                if task.get('userId') == int(userId):
+                                writer.writerow([userId, user_name,
+                                                str(task.get('completed')),
+                                                task.get('title')])

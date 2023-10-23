@@ -4,41 +4,32 @@
 import requests
 import sys
 
-
-def get_employee_todo_progress(employee_id):
-    """Define the API endpoint"""
-    base_url = "https://jsonplaceholder.typicode.com"
-    employee_endpoint = f"{base_url}/users/{employee_id}"
-    todos_endpoint = f"{base_url}/todos?userId={employee_id}"
-
-    try:
-        employee_response = requests.get(employee_endpoint)
-        employee_data = employee_response.json()
-
-        todos_response = requests.get(todos_endpoint)
-        todos_data = todos_response.json()
-
-        total_tasks = len(todos_data)
-        completed_tasks = sum(1 for todo in todos_data if todo['completed'])
-
-        print(f"Employee {employee_data['name']} is done with tasks
-              ({completed_tasks}/{total_tasks}): ")
-        for todo in todos_data:
-            if todo['completed']:
-                print(f"\t{todo['title']}")
-
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
-        sys.exit(1)
-    except ValueError:
-        print("Error: Invalid JSON response from the API.")
-        sys.exit(1)
-
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
         print("Usage: python script.py <employee_id>")
         sys.exit(1)
 
-    employee_id = int(sys.argv[1])
-    get_employee_todo_progress(employee_id)
+    userId = sys.argv[1]
+
+    user_response = requests.get(f"https://jsonplaceholder.typicode.com/users/{userId}")
+
+    if user_response.status_code != 200:
+        print(f"Error: User with ID {userId} not found.")
+        sys.exit(1)
+
+    user_data = user_response.json()
+    user_name = user_data.get('name')
+
+    # Fetch the user's TODO list
+    todos_response = requests.get(f"https://jsonplaceholder.typicode.com/todos?userId={userId}")
+    todo_data = todos_response.json()
+
+    totalTasks = len(todo_data)
+    completed = sum(1 for task in todo_data if task.get('completed'))
+
+    print('Employee {} is done with tasks({}/{}):'
+          .format(user_name, completed, totalTasks))
+
+    for task in todo_data:
+        if task.get('completed'):
+            print('\t' + task.get('title'))

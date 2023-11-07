@@ -24,11 +24,4 @@ def top_ten(subreddit):
                 for i, post in enumerate(posts, 1):
                     print(f"{i}. {post['data']['title']}")
             else:
-                print("No posts found in this subreddit.")
-        elif response.status_code == 302:
-            return None
-
-        else:
-            return None
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
+                print None

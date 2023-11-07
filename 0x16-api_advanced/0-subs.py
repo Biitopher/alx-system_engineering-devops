@@ -2,6 +2,7 @@
 
 import requests
 
+
 def number_of_subscribers(subreddit):
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
 
@@ -19,7 +20,7 @@ def number_of_subscribers(subreddit):
             return subscribers
         elif response.status_code == 302:
             return 0
-        else:        
+        else:
             return 0
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")

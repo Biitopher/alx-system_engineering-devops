@@ -3,39 +3,52 @@
 import requests
 import sys
 
-def words_count(subreddit, word_list, after=None, word_count=None):
-    """Defines words count"""
-    response = requests.get(
-        f"https://www.reddit.com/r/{subreddit}/hot.json?limit=10&after={after}",
-        headers={"User-Agent": "100-count"},
-        allow_redirects=False)
+def count_words(subreddit, word_list, past=None, word_counts=None):
+    """ Defines words count"""
+    if word_counts is None:
+        word_counts = {}
+    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
+    headers = {
+        'User-Agent': '100-count'
+    }
+    params = {'past': past} if past else {}
+    response = requests.get(url, headers=headers, params=params)
 
-    if response.status_code != 200:
-        return 'None'
+    if response.status_code == 200:
+        try:
+            post_data = response.json()['data']['children']
+            for post in post_data:
+                title = post['data']['title']
 
-    data = response.json()
-    posts = [child.get("data").get("title")
-     for child in data.get("data").get("children")]
-    if not posts:
+                normalized_title = re.sub(r'[^a-zA-Z0-9 ]', '',
+                                          title.lower())
+                words = normalized_title.split()
+
+                for word in words:
+                    if word in word_list:
+                        if word in word_counts:
+                            word_counts[word] += 1
+                        else:
+                            word_counts[word] = 1
+
+            past = response.json()['data']['past']
+            if past is not None:
+                return count_words(subreddit, word_list, word_counts, past)
+            else:
+                sorted_word_counts = sorted(word_counts.items(),
+                                       key=lambda item: (-item[1], item[0]))
+                for keyword, count in sorted_word_counts:
+                    print(f"{keyword}: {count}")
+        except (KeyError, ValueError):
+            return None
+    elif response.status_code == 302:
+        return None
+    else:
         return None
 
-    word_list = list(dict.fromkeys(word_list))
 
-    if word_count == {}:
-        word_count = {word: 0 for word in word_list}
-
-    for title in posts:
-        split_words = title.split(' ')
-        for word in word_list:
-            for s_word in split_words:
-                if s_word.lower() == word.lower():
-                    word_count[word] += 1
-
-    if not data.get("data").get("after"):
-        sorted_counts = sorted(word_count.items(), key=lambda kv: kv[0])
-        sorted_counts = sorted(word_count.items(),
-                               key=lambda kv: kv[1], reverse=True)
-        [print('{}: {}'.format(k, v)) for k, v in sorted_counts if v != 0]
-    else:
-        return count_words(subreddit, word_list, word_count,
-                           data.get("data").get("after"))
+if __name__ == "__main__":
+    if len(sys.argv) > 2:
+        subreddit = sys.argv[2]
+        word_list = sys.argv[3]
+        count_words(subreddit, word_list)

@@ -2,8 +2,10 @@
 """Recursive function that queries the Reddit API"""
 import requests
 import sys
+import re
 
-def count_words(subreddit, word_list, past=None, word_counts=None):
+
+def count_words(subreddit, word_list, after=None, word_counts=None):
     """ Defines words count"""
     if word_counts is None:
         word_counts = {}
@@ -11,7 +13,7 @@ def count_words(subreddit, word_list, past=None, word_counts=None):
     headers = {
         'User-Agent': '100-count'
     }
-    params = {'past': past} if past else {}
+    params = {'after': after} if after else {}
     response = requests.get(url, headers=headers, params=params)
 
     if response.status_code == 200:
@@ -31,9 +33,9 @@ def count_words(subreddit, word_list, past=None, word_counts=None):
                         else:
                             word_counts[word] = 1
 
-            past = response.json()['data']['past']
-            if past is not None:
-                return count_words(subreddit, word_list, word_counts, past)
+            after = response.json()['data']['after']
+            if after is not None:
+                return count_words(subreddit, word_list, word_counts, after)
             else:
                 sorted_word_counts = sorted(word_counts.items(),
                                        key=lambda item: (-item[1], item[0]))

@@ -1,13 +1,13 @@
 #!/usr/bin/python3
 """Recursive function that queries the Reddit API"""
 import requests
+import sys
 
-
-def words_count(subreddit, word_list, after=None, word_count={}):
+def words_count(subreddit, word_list, after=None, word_count=None):
     """Defines words count"""
     response = requests.get(
         f"https://www.reddit.com/r/{subreddit}/hot.json?limit=10&after={after}",
-        headers={"User-Agent": "My-User-Agent"},
+        headers={"User-Agent": "100-count"},
         allow_redirects=False)
 
     if response.status_code != 200:

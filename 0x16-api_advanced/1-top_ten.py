@@ -26,8 +26,9 @@ def top_ten(subreddit):
             else:
                 print("No posts found in this subreddit.")
         elif response.status_code == 302:
-            print("Subreddit is not valid.")
+            return None
+
         else:
-            return (None)
+            return None
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")

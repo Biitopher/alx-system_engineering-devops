@@ -2,6 +2,7 @@
 """Recursive function that queries the Reddit API"""
 import requests
 
+
 def words_count(subreddit, word_list, after=None, counts=None):
     """Define the Reddit API word count"""
     response = requests.get(
@@ -11,8 +12,8 @@ def words_count(subreddit, word_list, after=None, counts=None):
 
     if response.status_code != 200:
         return('None')
-    
-     data = response.json()
+
+    data = response.json()
 
     posts = [child.get("data").get("title")
              for child in data

@@ -2,50 +2,42 @@
 """Recursive function that queries the Reddit API"""
 import requests
 
-def count_words(subreddit, word_list, after=None, counts=None):
+def words_count(subreddit, word_list, after=None, counts=None):
     """Define the Reddit API word count"""
-    if counts is None:
-        counts = {}
+    response = requests.get(
+        "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit),
+        headers={"User-Agent": "My-User-Agent"},
+        allow_redirects=False)
+
+    if response.status_code != 200:
+        return('None')
     
-    if not word_list:
-        sorted_counts = sorted(counts.items(), key=lambda item: (-item[1], item[0]))
-        for word, count in sorted_counts:
-            print(f"{word.lower()}: {count}")
-        return
+     data = response.json()
 
-    word = word_list[0]
-    
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json?limit=100"
-    
-    headers = {
-        'User-Agent': 'MyRedditBot/1.0'
-    }
+    posts = [child.get("data").get("title")
+             for child in data
+             .get("data")
+             .get("children")]
+    if not posts:
+        return None
 
-    params = {
-        "after": after
-    }
+    word_list = list(dict.fromkeys(word_list))
 
-    try:
-        response = requests.get(url, headers=headers, params=params)
-        if response.status_code == 200:
-            data = response.json()
-            if 'data' in data and 'children' in data['data']:
-                posts = data['data']['children']
-                for post in posts:
-                    title = post['data']['title'].lower()
-                    if f" {word.lower()} " in title or title.startswith(f"{word.lower()} ") or title.endswith(f" {word.lower()}") or title == word.lower():
-                        counts[word.lower()] = counts.get(word.lower(), 0) + 1
-                count_words(subreddit, word_list[1:], after=data['data']['after'], counts=counts)
-            elif response.status_code == 302:
-                print("Subreddit is not valid.")
-            else:
-                print("No posts found in this subreddit.")
-        else:
-            print(f"Error: Status code {response.status_code}")
-    except requests.exceptions.RequestException as e:
-        print(f"Error: {e}")
+    if count_word == {}:
+        count_word = {word: 0 for word in word_list}
 
-if __name__ == "__main__":
-    subreddit_name = "learnpython"
-    word_list = ["python", "java", "javascript"]
-    count_words(subreddit_name, word_list)
+    for title in posts:
+        split_words = title.split(' ')
+        for word in word_list:
+            for s_word in split_words:
+                if s_word.lower() == word.lower():
+                    count_word[word] += 1
+
+    if not data.get("data").get("after"):
+        counts_sorted = sorted(count_word.items(), key=lambda kv: kv[0])
+        counts_sorted = sorted(count_word.items(),
+                               key=lambda kv: kv[1], reverse=True)
+        [print('{}: {}'.format(k, v)) for k, v in counts_sorted if v != 0]
+    else:
+        return words_count(subreddit, word_list, count_word,
+                           data.get("data").get("after"))

@@ -7,7 +7,7 @@ def top_ten(subreddit):
     """Define the Reddit API"""
     response = requests.get(
         "https://www.reddit.com/r/{}/hot.json?limit=10".format(subreddit),
-        headers = {"User-Agent": "My-User-Agent"},
+        headers={"User-Agent": "My-User-Agent"},
         allow_redirects=False)
 
     if response.status_code >= 300:

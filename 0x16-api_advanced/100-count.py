@@ -38,7 +38,8 @@ def count_words(subreddit, word_list, after=None, word_counts=None):
                 return count_words(subreddit, word_list, word_counts, after)
             else:
                 sorted_word_counts = sorted(word_counts.items(),
-                                       key=lambda item: (-item[1], item[0]))
+                                            key=lambda item:
+                                            (-item[1], item[0]))
                 for keyword, count in sorted_word_counts:
                     print(f"{keyword}: {count}")
         except (KeyError, ValueError):

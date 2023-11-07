@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """Queries Reddit and prints titles"""
 import requests
+import sys
+import json
 
 
 def top_ten(subreddit):

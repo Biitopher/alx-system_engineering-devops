@@ -23,9 +23,9 @@ def number_of_subscribers(subreddit):
             subscribers = data['data']['subscribers']
             return subscribers
         elif response.status_code == 302:
-            return 0
+            return (0)
         else:
-            return 0
+            return (0)
     except requests.exceptions.RequestException as e:
         print(f"Error: {e}")
-        return 0
+        return (0)

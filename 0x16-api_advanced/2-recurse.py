@@ -19,8 +19,10 @@ def recurse(subreddit, hot_list=[], after=""):
         after = response.json().get("data").get("after")
 
         if after is None:
-            return (hot_list)
+            return (OK)
         else:
             return (recurse(subreddit, hot_list, after))
+        else:
+            return (OK)
     else:
-        return ()
+        return (None)

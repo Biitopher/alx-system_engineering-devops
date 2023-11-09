@@ -22,7 +22,5 @@ def recurse(subreddit, hot_list=[], after=""):
             return (OK)
         else:
             return (recurse(subreddit, hot_list, after))
-        else:
-            return (OK)
     else:
         return (None)

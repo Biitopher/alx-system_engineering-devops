@@ -5,7 +5,7 @@ import requests
 
 def recurse(subreddit, hot_list=[], after=""):
     """defines Reddit API"""
-     response = requests.get(
+    response = requests.get(
         "https://www.reddit.com/r/{}/hot.json".format(subreddit),
         headers={"User-Agent": "Custom"},
         params={"after": after},
